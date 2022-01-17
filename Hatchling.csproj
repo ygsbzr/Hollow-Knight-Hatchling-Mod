@@ -10,9 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Hatchling</RootNamespace>
     <AssemblyName>Hatchling</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,16 +32,17 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\dll\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\1.5Moddingapi\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="ModCommon">
-      <HintPath>..\dll\ModCommon.dll</HintPath>
+    <Reference Include="MMHOOK_Assembly-CSharp">
+      <HintPath>..\1.5Moddingapi\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker">
-      <HintPath>..\dll\PlayMaker.dll</HintPath>
+      <HintPath>..\1.5Moddingapi\PlayMaker.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,22 +51,16 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\dll\UnityEngine.dll</HintPath>
+      <HintPath>..\1.5Moddingapi\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\dll\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\1.5Moddingapi\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\HKproject\dll\UnityEngine.ImageConversionModule.dll</HintPath>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\1.5Moddingapi\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Physics2DModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\HKproject\dll\UnityEngine.Physics2DModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\HKproject\dll\UnityEngine.PhysicsModule.dll</HintPath>
+    <Reference Include="Vasi">
+      <HintPath>..\1.5Moddingapi\Vasi.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

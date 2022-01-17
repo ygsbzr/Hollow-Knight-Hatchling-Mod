@@ -2,23 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
 using HutongGames.PlayMaker.Actions;
-using ModCommon;
-using ModCommon.Util;
 using Modding;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
+using Vasi;
 namespace Hatchling
 {
 
-    public class InfiniteHatchling : Mod,ITogglableMod
+    public class InfiniteHatchling : Mod,ITogglableMod,IGlobalSettings<GlobalModSettings>
     {
-        public static readonly string DATA_DIR = Path.GetFullPath(Application.dataPath + "/Managed/Mods/CustomKnight");
+        public static readonly string DATA_DIR = Path.GetFullPath(Application.dataPath + "/Managed/Mods/Hatchlings");
         private readonly Dictionary<string, Texture2D> hatchlingTex = new Dictionary<string, Texture2D>();
         private int _selector;
         public int hatchlingSelector
@@ -32,23 +25,27 @@ namespace Hatchling
         }
         public override void Initialize()
         {
-            ModHooks.Instance.AfterSavegameLoadHook += ModifyHatchling;
-            ModHooks.Instance.ObjectPoolSpawnHook += Instance_ObjectPoolSpawnHook;
+            ModHooks.AfterSavegameLoadHook += ModifyHatchling;
+            ModHooks.ObjectPoolSpawnHook += Instance_ObjectPoolSpawnHook;
             On.KnightHatchling.Start += KnightHatchling_Start;
-            ModHooks.Instance.GetPlayerIntHook += ModifyCharmCost;
+            ModHooks.SetPlayerIntHook += ModifyCharmCost;
 
             _selector = -1;
             Log($"Init Done,atk:{Settings.attackOption},type:{Settings.hatchlingType},max:{Settings.maxCount},cost:{Settings.charmCost}");
         }
 
-        private int ModifyCharmCost(string intName)
+        private int ModifyCharmCost(string name, int orig)
         {
-            if (intName != nameof(PlayerData.charmCost_22))
-                return PlayerData.instance.GetIntInternal(intName);
-            return Math.Abs(Settings.charmCost);
+           if(name==nameof(PlayerData.instance.charmCost_22))
+            {
+                return Settings.charmCost;
+            }
+            else
+            {
+                return orig;
+            }
         }
 
-        
         private Texture2D LoadTex(string path)
         {
             if (!File.Exists(path))
@@ -108,22 +105,30 @@ namespace Hatchling
 
             var ce = GameObject.Find("Charm Effects");
             //var ce = HeroController.instance.transform.FindChild("Charm Effects").gameObject;
-            var hatchlingfsm = ce.LocateMyFSM("Hatchling Spawn");
+            var hatchlingstate = ce.LocateMyFSM("Hatchling Spawn").GetState("Equipped");
+ 
+            hatchlingstate.InsertAction(0, new SetIntValue { intVariable = hatchlingstate.Fsm.GetFsmInt("Hatchling Max"), intValue = Math.Abs(Settings.maxCount), everyFrame = false });
+            hatchlingstate.InsertAction(1, new SetFloatValue { floatVariable = hatchlingstate.Fsm.GetFsmFloat("Hatch Time"), floatValue = Math.Abs(Settings.hatchTime), everyFrame = false });
 
-            hatchlingfsm.InsertAction("Equipped", new SetIntValue {intVariable = hatchlingfsm.Fsm.GetFsmInt("Hatchling Max"),intValue=Math.Abs(Settings.maxCount) ,everyFrame=false}, 0);
-
-            LogDebug("Modify Hatchling MaxCount");
+            LogDebug("Modify Hatchling MaxCount and Time");
             
             
         }
         public void Unload()
         {
-            ModHooks.Instance.AfterSavegameLoadHook -= ModifyHatchling;
-            ModHooks.Instance.ObjectPoolSpawnHook -= Instance_ObjectPoolSpawnHook;
+            ModHooks.AfterSavegameLoadHook -= ModifyHatchling;
+            ModHooks.ObjectPoolSpawnHook -= Instance_ObjectPoolSpawnHook;
             On.KnightHatchling.Start -= KnightHatchling_Start;
-            ModHooks.Instance.GetPlayerIntHook -= ModifyCharmCost;
+            ModHooks.GetPlayerIntHook -= ModifyCharmCost;
         }
-
+        public GlobalModSettings OnSaveGlobal()
+        {
+            return Settings;
+        }
+        public void OnLoadGlobal(GlobalModSettings s)
+        {
+            Settings = s;
+        }
         public override string GetVersion()
         {
             return "1.0";
@@ -143,10 +148,6 @@ namespace Hatchling
         }
 
         public GlobalModSettings Settings = new GlobalModSettings();
-        public override ModSettings GlobalSettings 
-        { 
-            get => Settings;
-            set => Settings = (GlobalModSettings)value;
-        }
+        
     }
 }

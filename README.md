@@ -13,4 +13,4 @@
 ### charmCost
 	default is 2,you can reduce it to 0 if you like
 ### hatchlingtime
-        this can affect hatchling spawn speed, default is 2
+        this can affect hatchling spawn speed, default is 4

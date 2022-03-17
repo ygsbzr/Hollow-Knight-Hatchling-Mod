@@ -1,7 +1,7 @@
 # Hollow Knight InfiniteHatchling Mod
 ## how to use it 
    1. Create a folder named `Hatchlings` in Mods and put hatchling picture in it.
-   2. rename them as `{num}.png`,such as `1.png`,`2.png`,`0.png`
+   2. rename them as `{hnum}.png`,such as `h1.png`,`h2.png`,`h0.png`
 ## Usage
 	there are four option in mod setting
 ### attackOption

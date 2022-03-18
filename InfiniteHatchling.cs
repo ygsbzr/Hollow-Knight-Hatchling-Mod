@@ -28,7 +28,7 @@ namespace Hatchling
             ModHooks.AfterSavegameLoadHook += ModifyHatchling;
             ModHooks.ObjectPoolSpawnHook += Instance_ObjectPoolSpawnHook;
             On.KnightHatchling.Start += KnightHatchling_Start;
-            ModHooks.SetPlayerIntHook += ModifyCharmCost;
+            ModHooks.GetPlayerIntHook += ModifyCharmCost;
 
             _selector = -1;
             Log($"Init Done,atk:{Settings.attackOption},type:{Settings.hatchlingType},max:{Settings.maxCount},cost:{Settings.charmCost}");
@@ -36,14 +36,11 @@ namespace Hatchling
 
         private int ModifyCharmCost(string name, int orig)
         {
-           if(name==nameof(PlayerData.instance.charmCost_22))
+           if(name==nameof(PlayerData.charmCost_22))
             {
                 return Settings.charmCost;
             }
-            else
-            {
-                return orig;
-            }
+            return orig;
         }
 
         private Texture2D LoadTex(string path)
@@ -86,10 +83,10 @@ namespace Hatchling
                 Texture2D tex = LoadTex((DATA_DIR + "/" + $"h{hatchlingSelector}.png").Replace("\\", "/"));
                 if (tex)
                 {
-                    var materialProp = new MaterialPropertyBlock();
-                    go.GetComponent<MeshRenderer>().GetPropertyBlock(materialProp);
-                    materialProp.SetTexture("_MainTex", tex);
-                    go.GetComponent<MeshRenderer>().SetPropertyBlock(materialProp);
+                    var meterialprop = new MaterialPropertyBlock();
+                    go.GetComponent<MeshRenderer>().GetPropertyBlock(meterialprop);
+                    meterialprop.SetTexture("_MainTex", tex);
+                    go.GetComponent<MeshRenderer>().SetPropertyBlock(meterialprop);
                 }
             }
             return go;
